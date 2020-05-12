@@ -1,0 +1,8 @@
+http://A701015:RAJUraju@999@193.56.47.20:8080
+
+
+
+git config --global --unset http.proxy
+
+
+git config --global --get http.proxy
