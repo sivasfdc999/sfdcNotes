@@ -1,0 +1,23 @@
+<apex:page controller="AccountSearchController">  
+  <apex:form >  
+  
+      <apex:pageBlock title="Search Result">  
+          <apex:pageMessages />
+          <apex:pageBlockButtons location="top">
+              <apex:inputText value="{!searchstring}" label="Input"/>&nbsp;   
+              <apex:commandButton value="Search Accounts" action="{!search}"/>  
+          </apex:pageBlockButtons>
+      
+          <apex:pageblockTable value="{!acc}" var="a">  
+              <apex:column headerValue="Name">  
+                  <apex:outputlink value="/{!a.id}">{!a.Name}</apex:outputlink>  
+              </apex:column>  
+              <apex:column headerValue="Account Number" value="{!a.AccountNumber}"/>  
+              <apex:column headerValue="Industry" value="{!a.Industry}"/>  
+              <apex:column headerValue="Phone" value="{!a.Phone}"/>  
+              <apex:column headerValue="Website" value="{!a.Website}"/>  
+          </apex:pageBlockTable>     
+      </apex:pageBlock>   
+      
+  </apex:form>  
+</apex:page>

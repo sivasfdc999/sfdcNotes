@@ -1,0 +1,17 @@
+public class Example1 {
+    public list<Account> accs {get; set;}
+    public Example1(){
+        accs=[select id,name,industry from Account];
+    }
+}
+
+---------------------------------------
+
+<apex:page controller="Example1">
+    <apex:pageBlock title="SOQL Results">
+      <apex:pageBlockTable value="{!accs}" var="a">
+          <apex:column value="{!a.name}"/>
+          <apex:column value="{!a.industry}"/>
+       </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

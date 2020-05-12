@@ -1,0 +1,91 @@
+public class SendEmailToAccountContact {
+            public List<AccountWrapper> listaccwrap{get;set;}
+            public List<Contact> listcon{get;set;}
+            public boolean displayPopup {get;set;} 
+            public boolean displayPopupblank {get;set;} 
+            
+            
+            
+        
+            public SendEmailToAccountContact(){
+                displayPopup=false;
+                displayPopupblank =false;
+                List<Account> listacc = [SELECT Id, Name,Phone FROM Account LIMIT 10];
+                if(listaccwrap == null)
+                {
+                    listaccwrap = new List<AccountWrapper>();
+                    
+                    for(Account obj: listacc){
+                         AccountWrapper objWrap = new AccountWrapper();
+                        objWrap.objAcc = obj;
+                        objWrap.accountname=obj.Name;
+                        listaccwrap.add(objWrap);
+                        
+                    }
+                }
+            }
+        public void closePopup() {        
+                displayPopup = false;  
+                displayPopupblank=false;
+            } 
+            
+       
+            public void showSelectedCon(){
+                
+                listcon = new List<Contact>();
+                
+                for(AccountWrapper objWrap : listaccwrap){
+                    
+                    if(objWrap.selectCon){
+                        displayPopup = true;
+                        
+                            List<contact> lstcon = [SELECT Id, Name, Email, Phone,ACCOUNT.NAME FROM Contact WHERE ACCOUNT.NAME =:objWrap.accountname];
+                        for(Contact obj: lstcon){
+                        objWrap.objCon = obj;
+                        listcon.add(objWrap.objCon);
+                       }
+                    }
+                    else
+                    {
+                        displayPopupblank=true;
+                    }
+                    
+                }
+            }
+        
+            public void sendEmail(){
+                
+                String [] strToAdd = new List<String>();
+                if(listCon.size() > 0 && listCon != null){
+                    for(Contact objCon : listCon){
+                        strToAdd.add(objCon.Email);
+                    }
+                    
+                }
+                
+                Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
+                message.toAddresses = new String[] { 'saryasap@gmail.com','sauravkumar.a@hcl.com'};
+                    message.subject = 'This is Test Email from code';
+                message.plainTextBody = 'This is the message body.';
+                Messaging.SingleEmailMessage[] messages =   new List<Messaging.SingleEmailMessage> {message};
+                    Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
+                  
+                
+                displayPopup = false;
+            }
+         public class AccountWrapper
+        {
+            
+            public Account objAcc{get;set;}
+            public Boolean selectCon{get;set;}
+            public Contact objCon{get;set;}
+            public String accountname=null;
+            
+            public AccountWrapper()
+            {
+                objAcc= new Account();
+                objCon = new Contact() ;
+                selectCon=false;
+            }
+        }
+        }
